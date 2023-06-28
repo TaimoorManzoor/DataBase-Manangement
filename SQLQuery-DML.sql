@@ -1,0 +1,118 @@
+CREATE DATABASE LAB_03
+USE LAB_03
+-- CREATE University TABLE
+CREATE TABLE University 
+(	name NVARCHAR(20) PRIMARY KEY ,
+	address NVARCHAR(20) ,
+	type NVARCHAR(20),
+	VC NVARCHAR(20)
+)
+-- CREATE Faculty TABLE
+CREATE TABLE Faculty 
+(	name NVARCHAR(20) PRIMARY KEY ,
+	DEAN NVARCHAR(20) ,
+	LOCATION NVARCHAR(20),
+	UNIVERSITY_NAME NVARCHAR(20) FOREIGN KEY references University(name)
+)
+-- CREATE school TABLE
+CREATE TABLE school 
+(	name NVARCHAR(20) PRIMARY KEY ,
+	hod NVARCHAR(20) ,
+	LOCATION NVARCHAR(20),
+	faculty_NAME NVARCHAR(20) FOREIGN KEY references faculty(name)
+)
+-- CREATE program TABLE
+CREATE TABLE program 
+(	name NVARCHAR(20) PRIMARY KEY ,
+	total_credit int ,
+	duration int,
+	school_NAME NVARCHAR(20) FOREIGN KEY references school(name)
+)
+-- CREATE course TABLE
+CREATE TABLE course 
+(	code NVARCHAR(20) PRIMARY KEY ,
+	name NVARCHAR(20) ,
+	credit_hour NVARCHAR(20),
+	program_NAME NVARCHAR(20) FOREIGN KEY references program(name),
+	coordinator nvarchar(20)
+)
+-- CREATE Lecturer TABLE
+CREATE TABLE Lecturer 
+(	
+	emp_code NVARCHAR(20) PRIMARY KEY ,
+	name NVARCHAR(20) ,
+	designation NVARCHAR(20),
+	room NVARCHAR(20),
+	school_NAME NVARCHAR(20) FOREIGN KEY references school(name)
+)
+-- CREATE student TABLE
+CREATE TABLE student 
+(	reg_no NVARCHAR(20) PRIMARY KEY ,
+	name NVARCHAR(20) ,
+	email NVARCHAR(20),
+	cell int,
+	program NVARCHAR(20) FOREIGN KEY references program(name)
+)
+-- CREATE Course_Registration TABLE
+CREATE TABLE  Course_Registration
+(
+	reg_no NVARCHAR(20) FOREIGN KEY references student(reg_no),
+	emp_code NVARCHAR(20) FOREIGN KEY references Lecturer(emp_code),
+	date nvarchar(20),
+	assigned_by nvarchar(20),
+	primary key(assigned_by,date)
+)
+-- CREATE Course_Allocation TABLE
+CREATE TABLE Course_Allocation
+(
+	course_code NVARCHAR(20) FOREIGN KEY references course(code),
+	emp_code NVARCHAR(20) FOREIGN KEY references Lecturer(emp_code),
+	date nvarchar(20),
+	assigned_by nvarchar(20),
+	primary key(assigned_by,date)
+)
+-- UNIVERSITY INSERATION 
+INSERT INTO University VALUES('XYZ','123ABC','ABC','XZ')
+INSERT INTO University VALUES('ABC','456ABC','AAA','XY')
+INSERT INTO University VALUES('DEF','789ABC','BBB','XA')
+SELECT * FROM UNIVERSITY
+-- Faculty INSERATION
+INSERT INTO Faculty VALUES('XYZ','ABC','ABC','XYZ')
+INSERT INTO Faculty VALUES('ABC','ABD','AAA','ABC')
+INSERT INTO Faculty VALUES('DEF','ABE','BBB','DEF')
+SELECT * FROM Faculty
+-- SCHOOL INSERATION
+INSERT INTO SCHOOL VALUES('CS','AAA','ABB','XYZ')
+INSERT INTO SCHOOL VALUES('PHY','BBB','BAA','ABC')
+INSERT INTO SCHOOL VALUES('CHEM','CCC','CBB','DEF')
+SELECT * FROM SCHOOL
+-- PROGRAM INSERATION
+INSERT INTO PROGRAM VALUES('BSCS',132,4,'CS')
+INSERT INTO PROGRAM VALUES('BSPHY',132,4,'PHY')
+INSERT INTO PROGRAM VALUES('BSCHEM',132,4,'CHEM')
+SELECT * FROM PROGRAM
+-- COURSE INSERATION
+INSERT INTO COURSE VALUES('CS22','COMPUTER','3','BSCS','XX')
+INSERT INTO COURSE VALUES('PH22','PHYSCIS','3','BSPHY','YY')
+INSERT INTO COURSE VALUES('CHEM11','CHEMISTRY','3','BSCHEM','ZZ')
+SELECT * FROM COURSE
+-- Lecturer INSERATION
+INSERT INTO Lecturer VALUES('0028','ANAS','BBB','CS-01','CS')
+INSERT INTO Lecturer VALUES('0021','HASAN','YYY','BS-02','PHY')
+INSERT INTO Lecturer VALUES('0015','KHAN','ZZZ','BS-04','CHEM')
+SELECT * FROM Lecturer
+-- STUDENT INSERATION
+INSERT INTO STUDENT VALUES('002','ANAS','BBB@GMAIL.COM','112233','BSCS')
+INSERT INTO STUDENT VALUES('001','HASAN','YYY@GMAIL.COM','4445','BSPHY')
+INSERT INTO STUDENT VALUES('003','KHAN','ZZZ@GMAIL.COM','1111','BSCHEM')
+SELECT * FROM STUDENT
+-- Course_Registration INSERATION
+INSERT INTO Course_Registration VALUES('002','0028','11-11-22','ARY')
+INSERT INTO Course_Registration VALUES('001','0021','12-11-22','WWW')
+INSERT INTO Course_Registration VALUES('003','0015','14-11-22','EEE')
+SELECT * FROM Course_Registration
+-- Course_Allocation INSERATION
+INSERT INTO Course_Allocation VALUES('CS22','0028','11-11-22','ARY')
+INSERT INTO Course_Allocation VALUES('PH22','0021','12-11-22','WWW')
+INSERT INTO Course_Allocation VALUES('CHEM11','0015','14-11-22','EEE')
+SELECT * FROM Course_Allocation
